@@ -1,4 +1,7 @@
 const soap = require('soap');
+const util = require('util');
+
+const createClientPromise = util.promisify(soap.createClient);
 
 class ConsultService {
 
@@ -10,13 +13,14 @@ class ConsultService {
             sCepDestino: to
         });
 
-        console.log(query);
-
-        soap.createClient(process.env.CORREIOS_WEB_SERVICE_URL, (err, client) => {
-            client.CalcPrazo(query, (err, data) => {
-                console.log(data)
+        createClientPromise(process.env.CORREIOS_WEB_SERVICE_URL)
+            .then(client => {
+                client.CalcPrazo(query, (err, data) => {
+                    console.log(data);
+                })
             })
-        })
+            .catch(err => console.log(err))
+
     }
 }
 
