@@ -1,9 +1,11 @@
+const consultService = require('./../services/ConsultService');
+
 class ConsultController {
 
     async getDeliveryTime(req, res) {
 
         try {
-            throw new Error();
+            consultService.getDeliveryTime(40010, 37540000, 37550000);
         } catch (error) {
             res.json({
                 response: 'Something went wrong!'
