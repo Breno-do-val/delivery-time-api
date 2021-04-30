@@ -5,15 +5,16 @@ class ConsultController {
     async getDeliveryTime(req, res) {
 
         try {
-            consultService.getDeliveryTime(40010, 37540000, 37550000);
+            await consultService.getDeliveryTime(40010, 37540000, 37550000, result => {
+                return res.json({
+                    response: result
+                });
+            });
         } catch (error) {
             res.json({
                 response: 'Something went wrong!'
             })
         }
-        return res.json({
-            response: 'Server is responding'
-        });
     }
 }
 
