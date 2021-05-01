@@ -4,8 +4,10 @@ class ConsultController {
 
     async getDeliveryTime(req, res) {
 
+        const { code, from, to } = req.body;
+
         try {
-            await consultService.getDeliveryTime(40010, 37540000, 37550000, result => {
+            await consultService.getDeliveryTime(code, from, to, result => {
                 return res.json({
                     response: result
                 });

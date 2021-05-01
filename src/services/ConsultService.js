@@ -8,9 +8,9 @@ class ConsultService {
     getDeliveryTime(code, from, to, callback) {
 
         const query = Object.assign({
-            nCdServico: code,
-            sCepOrigem: from,
-            sCepDestino: to
+            nCdServico: String(code),
+            sCepOrigem: String(from),
+            sCepDestino: String(to)
         });
 
         createClientPromise(process.env.CORREIOS_WEB_SERVICE_URL)

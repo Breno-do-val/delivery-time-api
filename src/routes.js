@@ -4,6 +4,6 @@ const consultController = require('./controllers/ConsultController');
 
 const routes = express.Router();
 
-routes.get('/delivery-time', consultController.getDeliveryTime);
+routes.post('/delivery-time', consultController.getDeliveryTime);
 
 module.exports = routes;
