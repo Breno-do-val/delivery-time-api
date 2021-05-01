@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon src/app.js",
+    "swagger-autogen": "node swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,7 +26,9 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "soap": "^0.37.0"
+    "soap": "^0.37.0",
+    "swagger-autogen": "^2.6.3",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
