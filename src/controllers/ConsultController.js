@@ -4,39 +4,38 @@ class ConsultController {
 
     async getDeliveryTime(req, res) {
 
-        const { code, from, to } = req.body;
+        /* #swagger.parameters['codigo'] = {
+            in: 'body',
+            description: 'Code for type of service provided by Correios.',
+            type: 'object',
+            required: true,
+            schema: { $ref: "#/definitions/GetDeliveryTime"}
+        } */
+       
+        const { codigo, cepOrigin, cepDest } = req.body;
 
         try {
-            await consultService.getDeliveryTime(code, from, to, result => {
+            await consultService.getDeliveryTime(codigo, cepOrigin, cepDest, result => {
 
-                let prazoEntrega = result.CalcPrazoResult.Servicos.cServico[0].PrazoEntrega;
+                let deliveryTime = result.CalcPrazoResult.Servicos.cServico[0].PrazoEntrega;
 
-                if (prazoEntrega >= 3) {
-                    return res.json({
-                        response: prazoEntrega
+                if (deliveryTime > 3) {
+                    // #swagger.responses[200] = { description: 'Being the delivery time feasible or not' }
+                    res.status(200).json({
+                        response: `Prazo inviável = ${deliveryTime} dias. Aconselhamos utilizar o serviço PAC = N dias. Sai bem mais barato`
                     });
                 }
                 else {
-                    return res.json({
-                        response: 'Testing'
+                    res.status(200).json({
+                        response: `Prazo viável = ${deliveryTime} dias`
                     });
                 }
             });
         } catch (error) {
-            res.json({
+            res.status(500).json({
                 response: 'Something went wrong!'
-            })
+            });
         }
-    }
-
-    destructureResult(result) {
-        if (!result) {
-            throw new Error();
-        }
-
-        let responseResult = result.CalcPrazoResult.Servicos.cServico[0];
-
-        return responseResult;
     }
 }
 
