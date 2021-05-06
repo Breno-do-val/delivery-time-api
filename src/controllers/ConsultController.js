@@ -17,18 +17,31 @@ class ConsultController {
         try {
             await consultService.getDeliveryTime(codigo, cepOrigin, cepDest, result => {
 
+                if (result.CalcPrazoResult.Servicos === null) {
+                    res.status(400).json({
+                        response: `Verifique todos os parâmetros enviados`
+                    });
+                    return;
+                }
+
                 let deliveryTime = result.CalcPrazoResult.Servicos.cServico[0].PrazoEntrega;
 
-                if (deliveryTime > 3) {
-                    // #swagger.responses[200] = { description: 'Being the delivery time feasible or not' }
-                    res.status(200).json({
-                        response: `Prazo inviável = ${deliveryTime} dias. Aconselhamos utilizar o serviço PAC = N dias. Sai bem mais barato`
-                    });
-                }
-                else {
-                    res.status(200).json({
-                        response: `Prazo viável = ${deliveryTime} dias`
-                    });
+                switch (deliveryTime) {
+                    case deliveryTime > 3:
+                        // #swagger.responses[200] = { description: 'Being the delivery time feasible or not' }
+                        res.status(200).json({
+                            response: `Prazo inviável = ${deliveryTime} dias. Aconselhamos utilizar o serviço PAC = N dias. Sai bem mais barato`
+                        });
+                        break;
+                    case deliveryTime <= 3:
+                        res.status(200).json({
+                            response: `Prazo viável = ${deliveryTime} dias`
+                        });
+                        break;
+                    default:
+                        res.status(400).json({
+                            response: `Verifique o código enviado e se o servico está disponível nessa região`
+                        });
                 }
             });
         } catch (error) {
